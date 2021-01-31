@@ -1,7 +1,3 @@
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
-
-const render = require("./lib/htmlRenderer");
 const { writeFile } = require("fs/promises");
 const Manager = require('./lib/manager')
 const Engineer = require('./lib/engineer')
@@ -9,6 +5,8 @@ const Intern = require('./lib/intern')
 const render = require('./lib/htmlRenderer')
 const path = require('path')
 
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 
 //start with empty array to hold employees
