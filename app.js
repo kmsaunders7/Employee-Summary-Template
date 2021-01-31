@@ -10,6 +10,12 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 const { writeFile } = require("fs/promises");
+const Manager = require('./lib/manager')
+const Engineer = require('./lib/engineer')
+const Intern = require('./lib/intern')
+const render = require('./lib/htmlRenderer')
+const path = require('path')
+
 
 
 //start with empty array to hold employees
@@ -54,7 +60,7 @@ function startQuestions () {
         if (response.continue === 'Yes') {
             selectEmployee()
         } else {
-            writeFile()
+            createWebsite()
         }
     }).catch(error => {
         if (error) {
