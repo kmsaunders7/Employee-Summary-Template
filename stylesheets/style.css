@@ -1,0 +1,18 @@
+body {
+    background-color: rgb(82, 105, 42);
+    font-family:'Times New Roman', Times, serif;
+
+
+}
+
+.employee-card {
+    background-color: rgb(236, 138, 138);
+    border: groove;
+    border-width: 5px;
+    border-radius: 2px;
+}
+
+.jumbotron {
+    background-color: floralwhite;
+    border-radius: 2px;
+}

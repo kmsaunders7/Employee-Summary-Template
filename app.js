@@ -2,6 +2,7 @@ const { writeFile } = require("fs/promises");
 const Manager = require('./lib/manager')
 const Engineer = require('./lib/engineer')
 const Intern = require('./lib/intern')
+const inquirer = require ('inquirer')
 const render = require('./lib/htmlRenderer')
 const path = require('path')
 
