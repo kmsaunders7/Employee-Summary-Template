@@ -1,145 +1,147 @@
-const { writeFile } = require("fs/promises");
 const Manager = require('./lib/manager')
 const Engineer = require('./lib/engineer')
 const Intern = require('./lib/intern')
 const inquirer = require ('inquirer')
-const render = require('./lib/htmlRenderer')
 const path = require('path')
+const fs = require('fs')
+
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
-
+const render = require('./lib/htmlRenderer')
 
 //start with empty array to hold employees
 
 const employees = []
 
-const employeeInfo = [
-    {
-        type: 'input',
-        name: 'name',
-        message: 'What is the employee name?'
-
-    },
-    {
-        type: 'input',
-        name: 'email',
-        message: 'What is the employees email address?'   
-    },
-    {
-        type: 'input',
-        name: 'id',
-        message: 'What is the employees ID verification number?'
-    },
-    {
-        type: 'list',
-        name: 'title',
-        message: 'What is the title of the emplyee?',
-        choices: ['Manager', 'Engineer', 'Intern']
-    }
-    
-]
-
-function startQuestions () {
-    inquirer.prompt(
+const addEmpl = () => {
+    inquirer.prompt([
         {
             type: 'list',
-            name: 'continue',
-            message: 'Do you want to add another employee?',
-            choices: ['Yes', 'No']
+            name: 'role',
+            message: 'Type of team member you wish to add?',
+            choices: [
+                'Manager',
+                'Engineer',
+                'Intern',
+                'Finished!'
+            ]
         }
-    ).then((response) => {
-        if (response.continue === 'Yes') {
-            selectEmployee()
-        } else {
-            createWebsite()
+    ]).then((answers) => {
+        console.log(answers)
+        if (answers.role == 'Finished!') {
+            finishedProgram()
         }
-    }).catch(error => {
-        if (error) {
-            console.log(error)
+        else if(answers.role == 'Engineer') {
+             createEngineer()
         }
-    })
-}
-
-function selectEmployee() {
-    inquirer.prompt(employeeInfo).then((response) => {
-        if (response.title === 'Manager') {
-            createManager(response)
-        } else if (response.title === 'Engineer') {
-            createEngineer(response)
-        } else if (response.title === 'Intern') {
-            createIntern(response)
-        } else {
-            console.log('error')
+        else if (answers.role == 'Intern') {
+            createIntern()
+        }
+        else if (answers.role == 'Manager') {
+            createManager()
         }
     })
 }
 
-function createManager (managerInfo) {
-    inquirer.prompt(
+const createManager = () => {
+    inquirer.prompt([
         {
             type: 'input',
-            name: 'officeNumber',
-            message: 'What is the employees office phone number?'
+            name: 'name',
+            message: 'What is the managers name?'
+        },
+        {
+            type: 'input',
+            name: 'id',
+            message: 'what is the managers id verification?'
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'what is the managers email?'
+        },
+        {
+            type: 'input',
+            name: 'number',
+            message: 'what is the managers office number?'
         }
-    ).then(async(response) => {
-        const {name, email, id} = managerInfo
-        let newManager = await new Manager (name, email, id, response.officeNumber)
-        employees.push(newManager)
-        //run main init function
-    }).catch(error => {
-        if(error) {
-            console.log(error)
-        }
+    ]).then((answers) => {
+        const manager = new Manager(answers.name, answers.id, answers.email, answers.number)
+        employees.push(manager)
+        addEmpl()
     })
 }
 
+
 //function for engineer prompts (github)...
-function createEngineer(engineerInfo) {
-    inquirer.prompt(
+const createEngineer = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What is the employees legal name?'
+        },
+        {
+            type: 'input',
+            name: 'id',
+            message: 'What is the employees identification number?'
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'What is the employees email address?'
+        },
         {
             type: 'input',
             name: 'github',
             message: 'What is the employees github username?'
         }
-    ).then(async(response) => {
-        const {name, email, id} = engineerInfo
-        let newEngineer = await new Engineer (name, email, id, response.gitHub)
-        employees.push(newEngineer)
+    ]).then((answers) => {
+        const engineer = new Engineer (answers.name, answers.email, answers.id, answers.gitHub)
+        employees.push(engineer)
         //run main init function
-    }).catch(error => {
-        if(error) {
-            console.log(error)
-        }
+        addEmpl()
     })
 }
 
 //function for intern prompts (school)...
-function createIntern (internInfo) {
-    inquirer.prompt(
+const createIntern = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What is the employees legal name?'
+        },
+        {
+            type: 'input',
+            name: 'id',
+            message: 'What is the employees identification number?'
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'What is the employees email address?'
+        },
         {
             type: 'input',
             name: 'schoolName',
             message: 'What school is the employee currently enrolled?'
         }
-    ).then(async(response) => {
-        const {name, email, id} = internInfo
-        let newIntern = await new Intern (name, email, id, response.schoolName)
-        employees.push(newIntern)
+    ]).then((answers) => {
+        const intern = new Intern (answers.name, answers.email, answers.id, answers.schoolName)
+        employees.push(intern)
         //run main init function
-    }).catch(error => {
-        if(error) {
-            console.log(error)
-        }
+        addEmpl()
     })
 }
 
-// begins the entire set of questions(prompts)
-startQuestions();
+// begins the entire set of questions(prompts) by creating the initial manager of the team
+addEmpl();
 
 //calls the function to create the html file by putting the employee array into render function
-function createWebsite() {
-    fs.writeFileSync(outputPath, render(employees), function(error) {
+function finishedProgram() {
+    fs.writeFile(outputPath, render(employees), function(error) {
         if (error) {
             console.log('error')
         }
