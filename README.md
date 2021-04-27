@@ -3,13 +3,19 @@
 ## *DESCRIPTION*
 In trying to build a team website, use this CLI to create a brief HTML outline describing different members.
 
+## *EXAMPLE RUN*
+
+![Example Video](./assets/example.gif)
+
 ## TABLE OF CONTENTS
 
 1. [What_to_Expect](#usage)
 2. [License](#license)
 3. [Testing](#testing)
-4. [Deployment](#deployment)
-5. [Questions](#questions)
+4. [Using](#using)
+5. [Deployment](#deployment)
+6. [Questions](#questions)
+
 
 
 ## *WHAT TO EXPECT* 
@@ -22,6 +28,9 @@ When using the application prompts will direct the user to pick the title of tea
 
 ## *TESTING*
 Jest
+
+## *USING*
+The application will run once you install inquirer as a dependency, then run 'node app.js' in the command line.
 
 ## *DEPLOYMENT*
 https://kmsaunders7.github.io/Employee-Summary-Template/
